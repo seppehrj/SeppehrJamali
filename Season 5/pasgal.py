@@ -17,5 +17,5 @@ def binomialcoeff(n, k) :
       
     return res 
   
-n = int(input("enter your number: "))
+n = int(input("Enter your number: "))
 printpascal(n) 

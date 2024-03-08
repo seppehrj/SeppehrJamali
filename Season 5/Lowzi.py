@@ -1,4 +1,4 @@
-n = int(input('enter your n number: '))
+n = int(input('Enter your n number: '))
 def lowzi(n):
     for i in range(1,n+1):
         print((n-i)*' '+(2*i-1)*'♦')

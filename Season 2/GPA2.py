@@ -1,8 +1,8 @@
 all_score = 0
 number_scores = 0
 while True:
-    score = input("Nomre Khodra Vared konid: ")
-    print("baraye moshahede moadel az dastor >>exit<< estfade konid")
+    score = input("Enter your score: ")
+    print("Use the command 'exit' to view the average and exit: ")
     if score == "exit":
         break
 

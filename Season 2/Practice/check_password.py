@@ -1,12 +1,12 @@
 import time
 
 for i in range(3):
-    password = input("Password ra Vared konid: ")
+    password = input("Enter the password: ")
     if password == "6565":
         print("successful")
         print("Welcome")
         break
     else:
-        print("wrong password")
+        print("Wrong password")
     
 time.sleep(30)

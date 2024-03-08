@@ -1,9 +1,9 @@
-n = int(input("Dost dari ta ch adadi fibo ro bbini"))
+n = int(input("How many Fibonacci numbers would you like to see?"))
 a = 1
 b = 1
 numbers = 0
 if n <= 0:
-    print("adad eshtebast")
+    print("The number is wrong")
 if n == 1:
     print(a, b)
 else:
