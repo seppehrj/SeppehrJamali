@@ -22,25 +22,35 @@ key_6 = types.KeyboardButton("ارگ مکس 📎")
 key_7 = types.KeyboardButton("کیو ار کد 🧧")
 key_8 = types.KeyboardButton("عکس 📸")
 key_9 = types.KeyboardButton("دستور ها 🩸")
-keyboard.add(key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8,key_9)
+keyboard.add(key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9)
+
 
 def start_game(chat_id):
-    user_states[chat_id] = {"game": {"playing": True, "number": random.randint(1,100), "guesses": 0}}
+    user_states[chat_id] = {"game": {"playing": True,
+                                     "number": random.randint(1, 100), "guesses": 0}}
     game_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     game_keyboard.add(types.KeyboardButton("ّبازی جدید ♦"))
-    bot.send_message(chat_id, "بازی شروع شد! عددی را بین 1 تا 100 حدس بزنید.", reply_markup=game_keyboard)
+    bot.send_message(
+        chat_id, "بازی شروع شد! عددی را بین 1 تا 100 حدس بزنید.", reply_markup=game_keyboard)
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.chat.id, f"سلام {message.from_user.first_name}, به بات خوش آمدید☺, لطفا درخواست خود را از منو انتخاب کنید", reply_markup=keyboard)
+    bot.send_message(message.chat.id, f"سلام {
+                     message.from_user.first_name}, به بات خوش آمدید☺, لطفا درخواست خود را از منو انتخاب کنید", reply_markup=keyboard)
+
 
 @bot.message_handler(func=lambda message: message.text == "استارت 🕸")
 def start_message(message):
-    bot.send_message(message.chat.id, f"سلام {message.from_user.first_name}🎃, لطفا درخواست خود را از منو انتخاب کنید", reply_markup=keyboard)
+    bot.send_message(message.chat.id, f"سلام {
+                     message.from_user.first_name}🎃, لطفا درخواست خود را از منو انتخاب کنید", reply_markup=keyboard)
+
+
 @bot.message_handler(commands=['game'])
 @bot.message_handler(func=lambda message: message.text == "گیم 🏀")
 def handle_game_start(message):
     start_game(message.chat.id)
+
 
 @bot.message_handler(func=lambda message: message.chat.id in user_states and "game" in user_states[message.chat.id] and user_states[message.chat.id]["game"]['playing'])
 def handle_guess(message):
@@ -54,30 +64,41 @@ def handle_guess(message):
     game_state['guesses'] += 1
 
     if guess == game_state['number']:
-        bot.send_message(chat_id, f"آفرین درسته✨, عدد تصادفی بود : {game_state['number']}, تعداد حدس: {game_state['guesses']}")
+        bot.send_message(chat_id, f"آفرین درسته✨, عدد تصادفی بود : {
+                         game_state['number']}, تعداد حدس: {game_state['guesses']}")
         game_state['playing'] = False
-        bot.send_message(chat_id, "یک گزینه را از منو انتخاب کنید یا یک بازی جدید را شروع کنید.", reply_markup=keyboard)
+        bot.send_message(
+            chat_id, "یک گزینه را از منو انتخاب کنید یا یک بازی جدید را شروع کنید.", reply_markup=keyboard)
     elif guess < game_state['number']:
         bot.send_message(chat_id, "برو بالا 🔼")
     else:
         bot.send_message(chat_id, "برو پایین 🔽")
+
+
 @bot.message_handler(commands=['age'])
 @bot.message_handler(func=lambda message: message.text == "سن 🧨")
 def ask_for_birthdate(message):
-    bot.send_message(message.chat.id, "لطفا تاریخ تولد خود را در شمسی وارد کنید. برای مثال (1379/5/11)")
+    bot.send_message(
+        message.chat.id, "لطفا تاریخ تولد خود را در شمسی وارد کنید. برای مثال (1379/5/11)")
+
 
 @bot.message_handler(func=lambda message: "/" in message.text and len(message.text.split("/")) == 3)
 def calculate_age(message):
     birthdate = message.text.split("/")
-    birthdate = jdate.date(int(birthdate[0]), int(birthdate[1]), int(birthdate[2]))
+    birthdate = jdate.date(int(birthdate[0]), int(
+        birthdate[1]), int(birthdate[2]))
     today = jdate.date.today()
-    age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+    age = today.year - birthdate.year - \
+        ((today.month, today.day) < (birthdate.month, birthdate.day))
     bot.send_message(message.chat.id, f"شما {age} ساله هستید.")
+
 
 @bot.message_handler(commands=['voice'])
 @bot.message_handler(func=lambda message: message.text == "ویس 📢")
 def ask_for_text(message):
-    bot.send_message(message.chat.id, "لطفا برای من یک جمله به زبال انگلیسی برای تبدیل به صدا ارسال کنید / به طور مثال : v:hello im rich")
+    bot.send_message(
+        message.chat.id, "لطفا برای من یک جمله به زبال انگلیسی برای تبدیل به صدا ارسال کنید / به طور مثال : v:hello im rich")
+
 
 @bot.message_handler(func=lambda message: "v:" in message.text)
 def text_to_voice(message):
@@ -88,11 +109,14 @@ def text_to_voice(message):
     voice.seek(0)
     bot.send_voice(message.chat.id, voice)
 
-@bot.message_handler(commands=['max',"argmax"])
+
+@bot.message_handler(commands=['max', "argmax"])
 @bot.message_handler(func=lambda message: message.text == "مکس 🎩" or message.text == "ارگ مکس 📎")
 def ask_for_array(message):
     user_states[message.chat.id] = {"command": message.text}
-    bot.send_message(message.chat.id, "لطفا فهرستی از اعداد را وارد کنید که با کاما از هم جدا شده اند, به عنوان مثال: (1,2,3...).")
+    bot.send_message(
+        message.chat.id, "لطفا فهرستی از اعداد را وارد کنید که با کاما از هم جدا شده اند, به عنوان مثال: (1,2,3...).")
+
 
 @bot.message_handler(func=lambda message: "," in message.text and message.chat.id in user_states)
 def handle_array_commands(message):
@@ -108,10 +132,13 @@ def handle_array_commands(message):
     if message.chat.id in user_states:
         del user_states[message.chat.id]
 
+
 @bot.message_handler(commands=['qrcode'])
 @bot.message_handler(func=lambda message: message.text == "کیو ار کد 🧧")
 def ask_for_qr_data(message):
-    bot.send_message(message.chat.id, " لطفا داده هایی را که می خواهید در یک کد کیو ار کد بزارید را برای من ارسال کنید. بطور مثال qr:im seppehr my age is 23")
+    bot.send_message(
+        message.chat.id, " لطفا داده هایی را که می خواهید در یک کد کیو ار کد بزارید را برای من ارسال کنید. بطور مثال qr:im seppehr my age is 23")
+
 
 @bot.message_handler(func=lambda message: "qr:" in message.text)
 def generate_qr_code(message):
@@ -121,18 +148,20 @@ def generate_qr_code(message):
     qr.save(img, 'PNG')
     img.seek(0)
     bot.send_photo(message.chat.id, img)
-    
+
+
 @bot.message_handler(commands=['photo'])
 @bot.message_handler(func=lambda message: message.text == "عکس 📸")
 def random_photo(message):
     bot.send_message(message.chat.id, "ممکن است چند لحظه طول بکشد...")
     file = "C:/Users/Tec-9/Pictures/Saved Pictures/"
-    random_photo = random.randint(1,3)
+    random_photo = random.randint(1, 3)
     photo_random = str(random_photo)
     photo_selected = file + photo_random + ".jpg"
     photo = open(photo_selected, "rb")
     bot.send_photo(message.chat.id, photo)
     bot.send_message(message.chat.id, "اینجا عکس تصادفی شماست.")
+
 
 @bot.message_handler(commands=['help'])
 @bot.message_handler(func=lambda message: message.text == "دستور ها 🩸")
@@ -149,5 +178,6 @@ def show_help(message):
 /help × این پیام راهنما را نشان دهید
     """
     bot.send_message(message.chat.id, help_text)
+
 
 bot.infinity_polling()
